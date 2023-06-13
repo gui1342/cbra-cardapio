@@ -4,9 +4,9 @@ import os
 import telebot
 from Cardapio import Cardapio
 
-BOT_TOKEN = os.environ.get('6015170764:AAGTdfbWqcblxEozHxq28Kw8Rzr7KAWomxA')
+BOT_TOKEN = os.environ.get('')
 
-bot = telebot.TeleBot("6015170764:AAGTdfbWqcblxEozHxq28Kw8Rzr7KAWomxA")
+bot = telebot.TeleBot("")
 
 cardapio = Cardapio()
 
@@ -25,10 +25,11 @@ def send_welcome(message):
 def send_welcome(message):
     cardapio.consultar_banco()
     string = cardapio.ExibirCardapioDiario(datetime.date.today())
-    if string:
-        bot.reply_to(message, string)
-    else:
-        bot.reply_to(message, "string vazia")
+    bot.reply_to(message, string, parse_mode='Markdown')# esse parse mode serve para exibir em negrito
+    bot.send_message(message.chat.id, "Deseja exibir o cardapio semanal?")#esta função permite enviar uma mensagem, diferente da anterior que é uma resposta
+    string = cardapio.ExibirCardapioSemanal()
+    bot.send_message(message.chat.id, string, parse_mode='Markdown')
+
 
 @bot.message_handler(commands=['saldo'])
 def send_welcome(message):
